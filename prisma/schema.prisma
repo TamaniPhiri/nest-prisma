@@ -10,4 +10,17 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model Product {
+  id           Int          @id @default(autoincrement())
+  name         String
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
+  price        Float
+  sale         Boolean      @default(false)
+  availability Availability
+}
 
+enum Availability {
+  IN_STORE
+  ONLINE
+}
