@@ -1,11 +1,15 @@
 import { Injectable } from '@nestjs/common';
-import { CreateProductDto } from './dto/create-product.dto';
-import { UpdateProductDto } from './dto/update-product.dto';
+import { Prisma } from '@prisma/client';
+import { DatabaseService } from 'src/database/database.service';
 
 @Injectable()
 export class ProductsService {
-  create(createProductDto: CreateProductDto) {
-    return 'This action adds a new product';
+  constructor(private readonly databaseService: DatabaseService) {}
+
+  async create(createProductDto: Prisma.ProductCreateInput) {
+    return this.databaseService.product.create({
+      data: createProductDto,
+    });
   }
 
   findAll() {
@@ -16,8 +20,11 @@ export class ProductsService {
     return `This action returns a #${id} product`;
   }
 
-  update(id: number, updateProductDto: UpdateProductDto) {
-    return `This action updates a #${id} product`;
+  update(id: number, updateProductDto: Prisma.ProductUpdateInput) {
+    return this.databaseService.product.update({
+      where: { id },
+      data: updateProductDto,
+    });
   }
 
   remove(id: number) {
